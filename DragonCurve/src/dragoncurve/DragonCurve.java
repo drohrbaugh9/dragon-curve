@@ -9,32 +9,13 @@ public class DragonCurve {
     public static void main(String[] args) {
         initializeCurve();
         
-        System.out.println("getQuasiMidpoint(curve[0], curve[1], <boolean>): " + Arrays.toString(getQuasiMidpoint(curve[0], curve[1], false)));
+        System.out.println("getQuasiMidpoint(curve[0], curve[1], <boolean>): " + Arrays.toString(getQuasiMidpoint(curve[0], curve[1], true)));
     }
     
     public static double[] getQuasiMidpoint(double[] start, double end[], boolean swap) {
-        double[] toReturn = new double[2];
         double[] midpoint = getMidpoint(start, end);
-        int[] direction = getDirection(start, end);
-        if (direction[0] == 1 && direction[1] == 0) {
-            toReturn[0] = midpoint[0];
-            if (swap) toReturn[1] = midpoint[1] + (getDistance(start, end) / 2);
-            else toReturn[1] = midpoint[1] - (getDistance(start, end) / 2);
-        } else if (direction[0] == 1 && direction[1] == 1) {
-            if (swap) {
-                toReturn[0] = start[0];
-                toReturn[1] = end[1];
-            }
-            else {
-                toReturn[0] = end[0];
-                toReturn[1] = start[1];
-            }
-        } else if (direction[0] == 0 && direction[1] == 1) {
-	    toReturn[1] = midpoint[1];
-	    if (swap) toReturn[0] = midpoint[0] - (getDistance(start, end) / 2);
-	    else toReturn[0] = midpoint[0] + (getDistance(start, end) / 2);
-	}
-        return toReturn;
+        int[] direction = getDirection(start, end); //System.out.println("direction: " + Arrays.toString(direction));
+        return checkDirections(start, end, direction, midpoint, swap);
     }
     
     public static double[] getMidpoint(double[] one, double[] two) {
@@ -45,7 +26,7 @@ public class DragonCurve {
     }
     
     public static int[] getDirection(double[] start, double[] end) {
-        int[] toReturn = new int[2]; double[] temp = unitVector(start, end);
+        int[] toReturn = new int[2]; double[] temp = unitVector(start, end); //System.out.println("unitVector: " + Arrays.toString(temp));
         if (Math.signum(temp[0]) == 1) toReturn[0] = 1;
         else if (Math.signum(temp[0]) == -1) toReturn[0] = -1;
         else toReturn[0] = 0;
@@ -65,13 +46,13 @@ public class DragonCurve {
     }
     
     public static double[] unitVector(double[] start, double[] end) {
-        double[] vec = new double[2]; vec[0] = end[0] - start[0]; vec[1] = end[1] - start[1];
+        double[] vec = new double[2]; vec[0] = end[0] - start[0]; vec[1] = end[1] - start[1]; //System.out.println("vec: " + Arrays.toString(vec));
         return unitVector(vec);
     }
     
     public static double[] unitVector(double[] vec) {
         double[] toReturn = new double[2];
-        double mag = getDistance(vec);
+        double mag = getDistance(vec); //System.out.println("getDistance: " + mag);
         toReturn[0] = vec[0] / mag;
         toReturn[1] = vec[1] / mag;
         return toReturn;
@@ -80,10 +61,88 @@ public class DragonCurve {
     private static void initializeCurve() {
         curve = new double[100][2];
         
-        curve[0][0] = 0; curve[0][1] = 0; //  /
-        curve[1][0] = 1; curve[1][1] = 1; // /
+        /**/
+        curve[0][0] = 0;  curve[0][1] = 0;  // |
+        curve[1][0] = 0; curve[1][1] = -1; // v
+        /**/
         
-        /*curve[0][0] = 0; curve[0][1] = 0; // __
-        curve[1][0] = 1; curve[1][1] = 0;*/
+        /*/
+        curve[0][0] = 0;  curve[0][1] = 0;  //  /
+        curve[1][0] = -1; curve[1][1] = -1; // v
+        /**/
+        
+        /*/
+        curve[0][0] = 0;  curve[0][1] = 0; // <-
+        curve[1][0] = -1; curve[1][1] = 0;
+        /**/
+        
+        /*/
+        curve[0][0] = 0;  curve[0][1] = 0; // ^
+        curve[1][0] = -1; curve[1][1] = 1; //  \
+        /**/
+        
+        /*/
+        curve[0][0] = 0; curve[0][1] = 0; // ^
+        curve[1][0] = 0; curve[1][1] = 1; // |
+        /**/
+        
+        /*/
+        curve[0][0] = 0; curve[0][1] = 0; //  ^
+        curve[1][0] = 1; curve[1][1] = 1; // /
+        /**/
+        
+        /*/
+        curve[0][0] = 0; curve[0][1] = 0; // ->
+        curve[1][0] = 1; curve[1][1] = 0;
+        /**/
+    }
+    
+    private static double[] checkDirections(double[] start, double[] end, int[] direction, double[] midpoint, boolean swap) {
+        double[] toReturn = new double[2];
+        if (direction[0] == 1 && direction[1] == 0) {
+            toReturn[0] = midpoint[0];
+            if (swap) toReturn[1] = midpoint[1] + (getDistance(start, end) / 2);
+            else toReturn[1] = midpoint[1] - (getDistance(start, end) / 2);
+        } else if (direction[0] == 1 && direction[1] == 1) {
+            if (swap) {
+                toReturn[0] = start[0];
+                toReturn[1] = end[1];
+            }
+            else {
+                toReturn[0] = end[0];
+                toReturn[1] = start[1];
+            }
+        } else if (direction[0] == 0 && direction[1] == 1) {
+	    toReturn[1] = midpoint[1];
+	    if (swap) toReturn[0] = midpoint[0] - (getDistance(start, end) / 2);
+	    else toReturn[0] = midpoint[0] + (getDistance(start, end) / 2);
+	} else if (direction[0] == -1 && direction[1] == 1) {
+            if (swap) {
+                toReturn[0] = end[0];
+                toReturn[1] = start[1];
+            }
+            else {
+                toReturn[0] = start[0];
+                toReturn[1] = end[1];
+            }
+        } else if (direction[0] == -1 && direction[1] == 0) {
+            toReturn[0] = midpoint[0];
+            if (swap) toReturn[1] = midpoint[1] - (getDistance(start, end) / 2);
+            else toReturn[1] = midpoint[1] + (getDistance(start, end) / 2);
+        } else if (direction[0] == -1 && direction[1] == -1) {
+            if (swap) {
+                toReturn[0] = start[0];
+                toReturn[1] = end[1];
+            }
+            else {
+                toReturn[0] = end[0];
+                toReturn[1] = start[1];
+            }
+        } else if (direction[0] == 0 && direction[1] == -1) {
+            toReturn[1] = midpoint[1];
+            if (swap) toReturn[0] = midpoint[0] + (getDistance(start, end) / 2);
+            else toReturn[0] = midpoint[0] - (getDistance(start, end) / 2);
+        }
+        return toReturn;
     }
 }
