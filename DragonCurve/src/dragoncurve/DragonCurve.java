@@ -7,14 +7,12 @@ public class DragonCurve {
     static double[][] curve;
 
     public static void main(String[] args) {
-        curve = new double[100][2];
-        curve[0][0] = 0; curve[0][1] = 0;
-        curve[1][0] = 1; curve[1][1] = 1;
+        initializeCurve();
         
-        System.out.println("getQuasiMidpoint(curve[0], curve[1]): " + Arrays.toString(getQuasiMidpoint(curve[0], curve[1], true)));
+        System.out.println("getQuasiMidpoint(curve[0], curve[1], <boolean>): " + Arrays.toString(getQuasiMidpoint(curve[0], curve[1], false)));
     }
     
-    public static  double[] getQuasiMidpoint(double[] start, double end[], boolean swap) {
+    public static double[] getQuasiMidpoint(double[] start, double end[], boolean swap) {
         double[] toReturn = new double[2];
         double[] midpoint = getMidpoint(start, end);
         int[] direction = getDirection(start, end);
@@ -73,5 +71,15 @@ public class DragonCurve {
         toReturn[0] = vec[0] / mag;
         toReturn[1] = vec[1] / mag;
         return toReturn;
+    }
+    
+    private static void initializeCurve() {
+        curve = new double[100][2];
+        
+        curve[0][0] = 0; curve[0][1] = 0; //  /
+        curve[1][0] = 1; curve[1][1] = 1; // /
+        
+        /*curve[0][0] = 0; curve[0][1] = 0; // __
+        curve[1][0] = 1; curve[1][1] = 0;*/
     }
 }
