@@ -29,7 +29,11 @@ public class DragonCurve {
                 toReturn[0] = end[0];
                 toReturn[1] = start[1];
             }
-        }
+        } else if (direction[0] == 0 && direction[1] == 1) {
+	    toReturn[1] = midpoint[1];
+	    if (swap) toReturn[0] = midpoint[0] - (getDistance(start, end) / 2);
+	    else toReturn[0] = midpoint[0] + (getDistance(start, end) / 2);
+	}
         return toReturn;
     }
     
