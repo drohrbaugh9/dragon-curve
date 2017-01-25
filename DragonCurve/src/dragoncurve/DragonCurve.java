@@ -1,147 +1,130 @@
 package dragoncurve;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 
 public class DragonCurve {
     
-    static double[][] curve;
+    static ArrayList<ArrayList<Double>> curve = new ArrayList<>();
+    static ArrayList<Double> point1 = new ArrayList<>(), point2 = new ArrayList<>();
 
     public static void main(String[] args) {
         initializeCurve();
         
-        System.out.println("getQuasiMidpoint(curve[0], curve[1], <boolean>): " + Arrays.toString(getQuasiMidpoint(curve[0], curve[1], true)));
+        System.out.println("getQuasiMidpoint(curve.get(0), curve.get(1), <boolean>): " + getQuasiMidpoint(curve.get(0), curve.get(1), true));
+        
+        curve.add(1, getQuasiMidpoint(curve.get(0), curve.get(1), true));
+        
+        System.out.println("curve.toString(): " + curve.toString());
+        
+        ArrayList<ArrayList<Double>> temp = curve; curve = new ArrayList<>(); curve.add(temp.get(0));
+        
+        for (int i = 1; i < temp.size(); i++) {
+            curve.add(new ArrayList<Double>());
+            curve.add(temp.get(i));
+        }
     }
     
-    public static double[] getQuasiMidpoint(double[] start, double end[], boolean swap) {
-        double[] midpoint = getMidpoint(start, end);
-        int[] direction = getDirection(start, end); //System.out.println("direction: " + Arrays.toString(direction));
+    public static ArrayList<Double> getQuasiMidpoint(ArrayList<Double> start, ArrayList<Double> end, boolean swap) {
+        ArrayList<Double> midpoint = getMidpoint(start, end);
+        ArrayList<Integer> direction = getDirection(start, end); //System.out.println("direction: " + Arrays.toString(direction));
         return checkDirections(start, end, direction, midpoint, swap);
     }
     
-    public static double[] getMidpoint(double[] one, double[] two) {
-        double[] toReturn = new double[2];
-        toReturn[0] = (one[0] + two[0]) / 2.0;
-        toReturn[1] = (one[1] + two[1]) / 2.0;
+    public static ArrayList<Double> getMidpoint(ArrayList<Double> one, ArrayList<Double> two) {
+        ArrayList<Double> toReturn = new ArrayList<>();
+        toReturn.add((one.get(0) + two.get(0)) / 2.0);
+        toReturn.add((one.get(1) + two.get(1)) / 2.0);
         return toReturn;
     }
     
-    public static int[] getDirection(double[] start, double[] end) {
-        int[] toReturn = new int[2]; double[] temp = unitVector(start, end); //System.out.println("unitVector: " + Arrays.toString(temp));
-        if (Math.signum(temp[0]) == 1) toReturn[0] = 1;
-        else if (Math.signum(temp[0]) == -1) toReturn[0] = -1;
-        else toReturn[0] = 0;
-        if (Math.signum(temp[1]) == 1) toReturn[1] = 1;
-        else if (Math.signum(temp[1]) == -1) toReturn[1] = -1;
-        else toReturn[1] = 0;
+    public static ArrayList<Integer> getDirection(ArrayList<Double> start, ArrayList<Double> end) {
+        ArrayList<Integer> toReturn = new ArrayList<Integer>(); ArrayList<Double> temp = unitVector(start, end); //System.out.println("unitVector: " + Arrays.toString(temp));
+        if (Math.signum(temp.get(0)) == 1) toReturn.add(1);
+        else if (Math.signum(temp.get(0)) == -1) toReturn.add(-1);
+        else toReturn.add(0);
+        if (Math.signum(temp.get(1)) == 1) toReturn.add(1);
+        else if (Math.signum(temp.get(1)) == -1) toReturn.add(1);
+        else toReturn.add(0);
         return toReturn;
     }
     
-    public static  double getDistance(double[] start, double[] end) {
-        double[] vec = new double[2]; vec[0] = end[0] - start[0]; vec[1] = end[1] - start[1];
+    public static double getDistance(ArrayList<Double> start, ArrayList<Double> end) {
+        ArrayList<Double> vec = new ArrayList<>(); vec.add(end.get(0) - start.get(0)); vec.add(end.get(1) - start.get(1));
         return getDistance(vec);
     }
     
-    public static  double getDistance(double[] vec) { 
-        return Math.sqrt(Math.pow(vec[0],2) + Math.pow(vec[1],2));
+    public static double getDistance(ArrayList<Double> vec) { 
+        return Math.sqrt(Math.pow(vec.get(0),2) + Math.pow(vec.get(1),2));
     }
     
-    public static double[] unitVector(double[] start, double[] end) {
-        double[] vec = new double[2]; vec[0] = end[0] - start[0]; vec[1] = end[1] - start[1]; //System.out.println("vec: " + Arrays.toString(vec));
+    public static ArrayList<Double> unitVector(ArrayList<Double> start, ArrayList<Double> end) {
+        ArrayList<Double> vec = new ArrayList<>(); vec.add(end.get(0) - start.get(0)); vec.add(end.get(1) - start.get(1)); //System.out.println("vec: " + Arrays.toString(vec));
         return unitVector(vec);
     }
     
-    public static double[] unitVector(double[] vec) {
-        double[] toReturn = new double[2];
+    public static ArrayList<Double> unitVector(ArrayList<Double> vec) {
+        ArrayList<Double> toReturn = new ArrayList<>();
         double mag = getDistance(vec); //System.out.println("getDistance: " + mag);
-        toReturn[0] = vec[0] / mag;
-        toReturn[1] = vec[1] / mag;
+        toReturn.add(vec.get(0) / mag);
+        toReturn.add(vec.get(1) / mag);
         return toReturn;
     }
     
     private static void initializeCurve() {
-        curve = new double[100][2];
         
         /**/
-        curve[0][0] = 0;  curve[0][1] = 0;  // |
-        curve[1][0] = 0; curve[1][1] = -1; // v
+        point1.add(0.0); point1.add(0.0); //  ^
+        point2.add(1.0); point2.add(1.0); // /
         /**/
         
-        /*/
-        curve[0][0] = 0;  curve[0][1] = 0;  //  /
-        curve[1][0] = -1; curve[1][1] = -1; // v
-        /**/
-        
-        /*/
-        curve[0][0] = 0;  curve[0][1] = 0; // <-
-        curve[1][0] = -1; curve[1][1] = 0;
-        /**/
-        
-        /*/
-        curve[0][0] = 0;  curve[0][1] = 0; // ^
-        curve[1][0] = -1; curve[1][1] = 1; //  \
-        /**/
-        
-        /*/
-        curve[0][0] = 0; curve[0][1] = 0; // ^
-        curve[1][0] = 0; curve[1][1] = 1; // |
-        /**/
-        
-        /*/
-        curve[0][0] = 0; curve[0][1] = 0; //  ^
-        curve[1][0] = 1; curve[1][1] = 1; // /
-        /**/
-        
-        /*/
-        curve[0][0] = 0; curve[0][1] = 0; // ->
-        curve[1][0] = 1; curve[1][1] = 0;
-        /**/
+        curve.add(point1); curve.add(point2);
     }
     
-    private static double[] checkDirections(double[] start, double[] end, int[] direction, double[] midpoint, boolean swap) {
-        double[] toReturn = new double[2];
-        if (direction[0] == 1 && direction[1] == 0) {
-            toReturn[0] = midpoint[0];
-            if (swap) toReturn[1] = midpoint[1] + (getDistance(start, end) / 2);
-            else toReturn[1] = midpoint[1] - (getDistance(start, end) / 2);
-        } else if (direction[0] == 1 && direction[1] == 1) {
+    private static ArrayList<Double> checkDirections(ArrayList<Double> start, ArrayList<Double> end, ArrayList<Integer> direction, ArrayList<Double> midpoint, boolean swap) {
+        ArrayList<Double> toReturn = new ArrayList<>();
+        if (direction.get(0) == 1 && direction.get(1) == 0) {
+            toReturn.add(midpoint.get(0));
+            if (swap) toReturn.add(midpoint.get(1) + (getDistance(start, end) / 2));
+            else toReturn.add(midpoint.get(1) - (getDistance(start, end) / 2));
+        } else if (direction.get(0) == 1 && direction.get(1) == 1) {
             if (swap) {
-                toReturn[0] = start[0];
-                toReturn[1] = end[1];
+                toReturn.add(start.get(0));
+                toReturn.add(end.get(1));
             }
             else {
-                toReturn[0] = end[0];
-                toReturn[1] = start[1];
+                toReturn.add(end.get(0));
+                toReturn.add(start.get(1));
             }
-        } else if (direction[0] == 0 && direction[1] == 1) {
-	    toReturn[1] = midpoint[1];
-	    if (swap) toReturn[0] = midpoint[0] - (getDistance(start, end) / 2);
-	    else toReturn[0] = midpoint[0] + (getDistance(start, end) / 2);
-	} else if (direction[0] == -1 && direction[1] == 1) {
-            if (swap) {
-                toReturn[0] = end[0];
-                toReturn[1] = start[1];
-            }
-            else {
-                toReturn[0] = start[0];
-                toReturn[1] = end[1];
-            }
-        } else if (direction[0] == -1 && direction[1] == 0) {
-            toReturn[0] = midpoint[0];
-            if (swap) toReturn[1] = midpoint[1] - (getDistance(start, end) / 2);
-            else toReturn[1] = midpoint[1] + (getDistance(start, end) / 2);
-        } else if (direction[0] == -1 && direction[1] == -1) {
-            if (swap) {
-                toReturn[0] = start[0];
-                toReturn[1] = end[1];
+        } else if (direction.get(0) == 0 && direction.get(1) == 1) {
+	    if (swap) toReturn.add(midpoint.get(0) - (getDistance(start, end) / 2));
+	    else toReturn.add(midpoint.get(0) + (getDistance(start, end) / 2));
+	    toReturn.add(midpoint.get(1));
+	} else if (direction.get(0) == -1 && direction.get(1) == 1) {
+            if (!swap) {
+                toReturn.add(start.get(0));
+                toReturn.add(end.get(1));
             }
             else {
-                toReturn[0] = end[0];
-                toReturn[1] = start[1];
+                toReturn.add(end.get(0));
+                toReturn.add(start.get(1));
             }
-        } else if (direction[0] == 0 && direction[1] == -1) {
-            toReturn[1] = midpoint[1];
-            if (swap) toReturn[0] = midpoint[0] + (getDistance(start, end) / 2);
-            else toReturn[0] = midpoint[0] - (getDistance(start, end) / 2);
+        } else if (direction.get(0) == -1 && direction.get(1) == 0) {
+            toReturn.add(midpoint.get(0));
+            if (swap) toReturn.add(midpoint.get(1) - (getDistance(start, end) / 2));
+            else toReturn.add(midpoint.get(1) + (getDistance(start, end) / 2));
+        } else if (direction.get(0) == -1 && direction.get(1) == -1) {
+            if (swap) {
+                toReturn.add(start.get(0));
+                toReturn.add(end.get(1));
+            }
+            else {
+                toReturn.add(end.get(0));
+                toReturn.add(start.get(1));
+            }
+        } else if (direction.get(0) == 0 && direction.get(1) == -1) {
+            if (swap) toReturn.add(midpoint.get(0) + (getDistance(start, end) / 2));
+            else toReturn.add(midpoint.get(0) - (getDistance(start, end) / 2));
+            toReturn.add(midpoint.get(1));
         }
         return toReturn;
     }
