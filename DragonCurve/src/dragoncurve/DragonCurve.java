@@ -12,16 +12,35 @@ public class DragonCurve {
         
         System.out.println("getQuasiMidpoint(curve.get(0), curve.get(1), <boolean>): " + getQuasiMidpoint(curve.get(0), curve.get(1), true));
         
-        curve.add(1, getQuasiMidpoint(curve.get(0), curve.get(1), true));
-        
-        System.out.println("curve.toString(): " + curve.toString());
-        
         ArrayList<ArrayList<Double>> temp = curve; curve = new ArrayList<>(); curve.add(temp.get(0));
         
         for (int i = 1; i < temp.size(); i++) {
             curve.add(new ArrayList<Double>());
             curve.add(temp.get(i));
         }
+        
+        System.out.println("curve.toString(): " + curve.toString());
+        
+        try{
+            System.out.println("curve.get(1).get(0): " + curve.get(1).get(0));
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("curve.get(1).get(0) throws an IndexOutOfBoundsException");
+        }
+        
+        curve.remove(1);
+        curve.add(1, getQuasiMidpoint(temp.get(0), temp.get(1), true));
+        
+        System.out.println("curve.toString(): " + curve.toString());
+        
+        for (int x = 0; x < 4; x++) {
+            temp = new ArrayList<>(curve); curve = new ArrayList<>(); curve.add(temp.get(0));
+            for (int i = 1; i < temp.size(); i++) {
+                curve.add(getQuasiMidpoint(temp.get(i - 1), temp.get(i), true));
+                curve.add(temp.get(i));
+            }
+        }
+        
+        System.out.println("curve.toString(): " + curve.toString());
     }
     
     public static ArrayList<Double> getQuasiMidpoint(ArrayList<Double> start, ArrayList<Double> end, boolean swap) {
