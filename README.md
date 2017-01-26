@@ -1,5 +1,5 @@
 # dragon-curve
 
-Here's what the end goal (which I have reached) is:
+Here's what my code can do:
 
-<img src="https://bentrubewriter.files.wordpress.com/2012/04/dragon16.png" height="200">
+<img src="https://drive.google.com/file/d/0B86sInPWYDgMdVd1ZU5WV3hpYWM/view?usp=sharing" height="200">
