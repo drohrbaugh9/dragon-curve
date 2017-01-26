@@ -26,6 +26,18 @@ public class DragonCurve {
         System.out.println("curve.toString(): " + curve.toString());
         
         System.out.println("toStringToSVG_Code(curve): " + toStringToSVG_Code(curve.toString()));
+        
+        double maxx = 0, minx = curve.get(0).get(0), maxy = 0, miny = curve.get(0).get(1), x, y;
+        
+        for (int i = 0; i < curve.size(); i++) {
+            x = curve.get(i).get(0); y = curve.get(i).get(1);
+            if (x > maxx) maxx = x;
+            else if (x < minx) minx = x;
+            if (y > maxy) maxy = y;
+            else if (y < miny) miny = y;
+        }
+        
+        System.out.println("max x: " + maxx + "; max y: " + maxy + "; min x: " + minx + "; min y: " + miny);
     }
     
     public static ArrayList<Double> getQuasiMidpoint(ArrayList<Double> start, ArrayList<Double> end, boolean swap) {
