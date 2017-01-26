@@ -10,37 +10,22 @@ public class DragonCurve {
     public static void main(String[] args) {
         initializeCurve();
         
-        System.out.println("getQuasiMidpoint(curve.get(0), curve.get(1), <boolean>): " + getQuasiMidpoint(curve.get(0), curve.get(1), true));
+        ArrayList<ArrayList<Double>> temp; boolean swap = true;
         
-        ArrayList<ArrayList<Double>> temp = curve; curve = new ArrayList<>(); curve.add(temp.get(0));
-        
-        for (int i = 1; i < temp.size(); i++) {
-            curve.add(new ArrayList<Double>());
-            curve.add(temp.get(i));
-        }
-        
-        System.out.println("curve.toString(): " + curve.toString());
-        
-        try{
-            System.out.println("curve.get(1).get(0): " + curve.get(1).get(0));
-        } catch (IndexOutOfBoundsException e) {
-            System.out.println("curve.get(1).get(0) throws an IndexOutOfBoundsException");
-        }
-        
-        curve.remove(1);
-        curve.add(1, getQuasiMidpoint(temp.get(0), temp.get(1), true));
-        
-        System.out.println("curve.toString(): " + curve.toString());
-        
-        for (int x = 0; x < 4; x++) {
+        for (int x = 0; x < 20; x++) {
+            //System.out.println("\n---Iteration " + (x + 1) + "---");
             temp = new ArrayList<>(curve); curve = new ArrayList<>(); curve.add(temp.get(0));
+            swap = true;
             for (int i = 1; i < temp.size(); i++) {
-                curve.add(getQuasiMidpoint(temp.get(i - 1), temp.get(i), true));
+                curve.add(getQuasiMidpoint(temp.get(i - 1), temp.get(i), swap));
                 curve.add(temp.get(i));
+                swap = !swap;
             }
         }
         
         System.out.println("curve.toString(): " + curve.toString());
+        
+        System.out.println("toStringToSVG_Code(curve): " + toStringToSVG_Code(curve.toString()));
     }
     
     public static ArrayList<Double> getQuasiMidpoint(ArrayList<Double> start, ArrayList<Double> end, boolean swap) {
@@ -57,13 +42,14 @@ public class DragonCurve {
     }
     
     public static ArrayList<Integer> getDirection(ArrayList<Double> start, ArrayList<Double> end) {
-        ArrayList<Integer> toReturn = new ArrayList<Integer>(); ArrayList<Double> temp = unitVector(start, end); //System.out.println("unitVector: " + Arrays.toString(temp));
+        ArrayList<Integer> toReturn = new ArrayList<>(); ArrayList<Double> temp = unitVector(start, end); //System.out.println("unitVector: " + temp.toString());
         if (Math.signum(temp.get(0)) == 1) toReturn.add(1);
         else if (Math.signum(temp.get(0)) == -1) toReturn.add(-1);
         else toReturn.add(0);
         if (Math.signum(temp.get(1)) == 1) toReturn.add(1);
-        else if (Math.signum(temp.get(1)) == -1) toReturn.add(1);
+        else if (Math.signum(temp.get(1)) == -1) toReturn.add(-1);
         else toReturn.add(0);
+        //System.out.println("getDirection(" + start.toString() + ", " + end.toString() + "): " + toReturn.toString());
         return toReturn;
     }
     
@@ -93,7 +79,7 @@ public class DragonCurve {
         
         /**/
         point1.add(0.0); point1.add(0.0); //  ^
-        point2.add(1.0); point2.add(1.0); // /
+        point2.add(32.0); point2.add(32.0); // /
         /**/
         
         curve.add(point1); curve.add(point2);
@@ -101,11 +87,13 @@ public class DragonCurve {
     
     private static ArrayList<Double> checkDirections(ArrayList<Double> start, ArrayList<Double> end, ArrayList<Integer> direction, ArrayList<Double> midpoint, boolean swap) {
         ArrayList<Double> toReturn = new ArrayList<>();
-        if (direction.get(0) == 1 && direction.get(1) == 0) {
+        if (direction.get(0) == 1 && direction.get(1) == 0) { // E
+            //System.out.println("E");
             toReturn.add(midpoint.get(0));
             if (swap) toReturn.add(midpoint.get(1) + (getDistance(start, end) / 2));
             else toReturn.add(midpoint.get(1) - (getDistance(start, end) / 2));
-        } else if (direction.get(0) == 1 && direction.get(1) == 1) {
+        } else if (direction.get(0) == 1 && direction.get(1) == 1) { // NE
+            //System.out.println("NE");
             if (swap) {
                 toReturn.add(start.get(0));
                 toReturn.add(end.get(1));
@@ -114,11 +102,13 @@ public class DragonCurve {
                 toReturn.add(end.get(0));
                 toReturn.add(start.get(1));
             }
-        } else if (direction.get(0) == 0 && direction.get(1) == 1) {
+        } else if (direction.get(0) == 0 && direction.get(1) == 1) { // N
+            //System.out.println("N");
 	    if (swap) toReturn.add(midpoint.get(0) - (getDistance(start, end) / 2));
 	    else toReturn.add(midpoint.get(0) + (getDistance(start, end) / 2));
 	    toReturn.add(midpoint.get(1));
-	} else if (direction.get(0) == -1 && direction.get(1) == 1) {
+	} else if (direction.get(0) == -1 && direction.get(1) == 1) { // NW
+            //System.out.println("NW");
             if (!swap) {
                 toReturn.add(start.get(0));
                 toReturn.add(end.get(1));
@@ -127,11 +117,13 @@ public class DragonCurve {
                 toReturn.add(end.get(0));
                 toReturn.add(start.get(1));
             }
-        } else if (direction.get(0) == -1 && direction.get(1) == 0) {
+        } else if (direction.get(0) == -1 && direction.get(1) == 0) { // W
+            //System.out.println("W");
             toReturn.add(midpoint.get(0));
             if (swap) toReturn.add(midpoint.get(1) - (getDistance(start, end) / 2));
             else toReturn.add(midpoint.get(1) + (getDistance(start, end) / 2));
-        } else if (direction.get(0) == -1 && direction.get(1) == -1) {
+        } else if (direction.get(0) == -1 && direction.get(1) == -1) { // SW
+            //System.out.println("SW");
             if (swap) {
                 toReturn.add(start.get(0));
                 toReturn.add(end.get(1));
@@ -140,11 +132,31 @@ public class DragonCurve {
                 toReturn.add(end.get(0));
                 toReturn.add(start.get(1));
             }
-        } else if (direction.get(0) == 0 && direction.get(1) == -1) {
+        } else if (direction.get(0) == 0 && direction.get(1) == -1) { // S
+            //System.out.println("S");
             if (swap) toReturn.add(midpoint.get(0) + (getDistance(start, end) / 2));
             else toReturn.add(midpoint.get(0) - (getDistance(start, end) / 2));
             toReturn.add(midpoint.get(1));
+        } else if (direction.get(0) == 1 && direction.get(1) == -1) { // SE
+            //System.out.println("SE");
+            if (!swap) {
+                toReturn.add(start.get(0));
+                toReturn.add(end.get(1));
+            }
+            else {
+                toReturn.add(end.get(0));
+                toReturn.add(start.get(1));
+            }
         }
+        //System.out.println("getQuasiMidpoint(" + start.toString() + ", " + end.toString() + ", " + swap + "): " + toReturn.toString());
         return toReturn;
+    }
+    
+    private static String toStringToSVG_Code(String s) {
+        s = s.replaceAll("\\[\\[", "M");
+        s = s.replaceAll("\\]\\]", "");
+        s = s.replaceAll("\\], \\[", " L");
+        s = s.replaceAll(",", "");
+        return s;
     }
 }
