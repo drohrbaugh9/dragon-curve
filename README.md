@@ -2,4 +2,4 @@
 
 Here's what my code can do:
 
-<img src="https://drive.google.com/file/d/0B86sInPWYDgMdVd1ZU5WV3hpYWM/view?usp=sharing" height="200">
+<img src="https://raw.githubusercontent.com/drohrbaugh9/dragon-curve/master/dragon-curve-12.png" height="400">
