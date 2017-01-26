@@ -12,7 +12,7 @@ public class DragonCurve {
         
         ArrayList<ArrayList<Double>> temp; boolean swap = true;
         
-        for (int x = 0; x < 20; x++) {
+        for (int x = 0; x < 12; x++) {
             //System.out.println("\n---Iteration " + (x + 1) + "---");
             temp = new ArrayList<>(curve); curve = new ArrayList<>(); curve.add(temp.get(0));
             swap = true;
