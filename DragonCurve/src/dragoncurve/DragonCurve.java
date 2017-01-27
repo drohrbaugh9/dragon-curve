@@ -90,8 +90,8 @@ public class DragonCurve {
     private static void initializeCurve() {
         
         /**/
-        point1.add(0.0); point1.add(0.0); //  ^
-        point2.add(32.0); point2.add(32.0); // /
+        point1.add(0.0); point1.add(0.0);
+        point2.add(32.0); point2.add(32.0);
         /**/
         
         curve.add(point1); curve.add(point2);
