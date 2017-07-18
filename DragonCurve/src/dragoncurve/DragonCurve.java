@@ -5,14 +5,16 @@ import java.util.ArrayList;
 public class DragonCurve {
     
     static ArrayList<ArrayList<Double>> curve = new ArrayList<>();
-    static ArrayList<Double> point1 = new ArrayList<>(), point2 = new ArrayList<>();
+    static ArrayList<Double> point1 = new ArrayList<>(), point2 = new ArrayList<>(), point3 = new ArrayList<>(), point4 = new ArrayList<>(), point5 = new ArrayList<>();
+    
+    static int iterations = 5;
 
     public static void main(String[] args) {
         initializeCurve();
         
         ArrayList<ArrayList<Double>> temp; boolean swap = true;
         
-        for (int x = 0; x < 12; x++) {
+        for (int x = 0; x < iterations; x++) {
             //System.out.println("\n---Iteration " + (x + 1) + "---");
             temp = new ArrayList<>(curve); curve = new ArrayList<>(); curve.add(temp.get(0));
             swap = true;
@@ -38,6 +40,7 @@ public class DragonCurve {
         }
         
         System.out.println("max x: " + maxx + "; max y: " + maxy + "; min x: " + minx + "; min y: " + miny);
+        System.out.println("width: " + (maxx - minx) + "; height: " + (maxy - miny));
     }
     
     public static ArrayList<Double> getQuasiMidpoint(ArrayList<Double> start, ArrayList<Double> end, boolean swap) {
@@ -90,11 +93,14 @@ public class DragonCurve {
     private static void initializeCurve() {
         
         /**/
-        point1.add(0.0); point1.add(0.0);
-        point2.add(32.0); point2.add(32.0);
+        point1.add(16.0); point1.add(0.0);
+        point2.add(16.0); point2.add(16.0);
+        point3.add(0.0); point3.add(16.0);
+        point4.add(0.0); point4.add(32.0);
+        //point5.add(0.0); point5.add(0.0);
         /**/
         
-        curve.add(point1); curve.add(point2);
+        curve.add(point1); curve.add(point2); curve.add(point3); curve.add(point4); //curve.add(point5);
     }
     
     private static ArrayList<Double> checkDirections(ArrayList<Double> start, ArrayList<Double> end, ArrayList<Integer> direction, ArrayList<Double> midpoint, boolean swap) {
