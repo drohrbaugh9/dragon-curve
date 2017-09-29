@@ -170,7 +170,7 @@ public class DragonCurve {
         return toReturn;
     }
     
-    private static String toStringToSVG_Code(String s) {
+    public static String toStringToSVG_Code(String s) {
         s = s.replaceAll("\\[\\[", "M");
         s = s.replaceAll("\\]\\]", "");
         s = s.replaceAll("\\], \\[", " L");
