@@ -5,9 +5,9 @@ import java.util.ArrayList;
 public class DragonCurve {
     
     static ArrayList<ArrayList<Double>> curve = new ArrayList<>();
-    static ArrayList<Double> point1 = new ArrayList<>(), point2 = new ArrayList<>(), point3 = new ArrayList<>(), point4 = new ArrayList<>(), point5 = new ArrayList<>();
+    static ArrayList<Double> point1 = new ArrayList<>(), point2 = new ArrayList<>(), point3 = new ArrayList<>(), point4 = new ArrayList<>(), point5 = new ArrayList<>(), point6 = new ArrayList<>();
     
-    static int iterations = 10;
+    static int iterations = 12;
 
     public static void main(String[] args) {
         initializeCurve();
@@ -94,13 +94,14 @@ public class DragonCurve {
         
         /**/
         point1.add(0.0); point1.add(0.0);
-        point2.add(0.0); point2.add(30.0);
-        point3.add(20.0); point3.add(30.0);
-        //point4.add(0.0); point4.add(32.0);
-        //point5.add(0.0); point5.add(0.0);
+        point2.add(0.0); point2.add(32.0);
+        point3.add(32.0); point3.add(32.0);
+        point4.add(32.0); point4.add(0.0);
+        point5.add(0.0); point5.add(0.0);
+        //point6.add(10.0); point6.add(20.0);
         /**/
         
-        curve.add(point1); curve.add(point2); curve.add(point3); //curve.add(point4); //curve.add(point5);
+        curve.add(point1); curve.add(point2); curve.add(point3); curve.add(point4); curve.add(point5); //curve.add(point6);
     }
     
     private static ArrayList<Double> checkDirections(ArrayList<Double> start, ArrayList<Double> end, ArrayList<Integer> direction, ArrayList<Double> midpoint, boolean swap) {

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dragoncurve;
 
 import java.util.ArrayList;
@@ -68,20 +63,9 @@ public class HilbertCurve {
         ArrayList<ArrayList<Double>> middle = new ArrayList<>();
         
         if (vec[0] == 0) {
-            double div = Math.signum(vec[1]) * 3.0;
-            
-            middle.add(new ArrayList<Double>(Arrays.asList(start.get(0), start.get(1) + vec[1] / div)));
-            middle.add(new ArrayList<Double>(Arrays.asList(start.get(0) + vec[1] / div, middle.get(0).get(1))));
-            middle.add(new ArrayList<Double>(Arrays.asList(middle.get(1).get(0), start.get(1))));
-        } else {
-            double div = Math.signum(vec[0]) * 3.0;
-            
-            middle.add(new ArrayList<Double>(Arrays.asList(start.get(0) + vec[0] / div, start.get(1))));
-            middle.add(new ArrayList<Double>(Arrays.asList(middle.get(0).get(0), start.get(1) + vec[0] / div)));
-            middle.add(new ArrayList<Double>(Arrays.asList(start.get(0), middle.get(1).get(1))));
-            middle.add(new ArrayList<Double>(Arrays.asList(start.get(0), middle.get(1).get(1) + vec[0] / div)));
-            middle.add(new ArrayList<Double>(Arrays.asList(start.get(0), start.get(1) + vec[0])));
-            middle.add(new ArrayList<Double>(Arrays.asList(middle.get(0).get(0), start.get(1) + vec[0])));
+            if (vec[1] > 0) {
+                
+            }
         }
         
         return middle;
